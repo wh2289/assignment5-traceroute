@@ -57,7 +57,7 @@ def get_route(hostname):
     for ttl in range(1,MAX_HOPS):
         for tries in range(TRIES):
             destAddr = gethostbyname(hostname)
-            icmp = socket.getprotobyname("icmp")
+            icmp = getprotobyname("icmp")
             mySocket = socket(AF_INET,SOCK_RAW, icmp)
 
             mySocket.setsockopt(IPPROTO_IP, IP_TTL, struct.pack('I', ttl))
