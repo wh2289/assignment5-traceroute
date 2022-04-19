@@ -40,14 +40,14 @@ def build_packet():
    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, myID, 1)
    data = struct.pack("d", sendTime)
    myChecksum = checksum(header+data)
-    if sys.platform == 'darwin':
+   if sys.platform == 'darwin':
        myChecksum = htons(myChecksum) & 0xffff
-    else:
+   else:
        myChecksum = htons(myChecksum)
 
-    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, myID, 1)
-    packet = header + data
-    return packet
+   header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, myID, 1)
+   packet = header + data
+   return packet
 
 def get_route(hostname):
     timeLeft = TIMEOUT
@@ -106,7 +106,7 @@ def get_route(hostname):
                 elif types == 0:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
-                    rtt = str(round(t - timeSent)*1000))+ "ms"
+                    rtt = str(round(t - timeSent)*1000)+ "ms"
                     tracelist1.append([str(ttl), rtt, str(addr[0]), sourceHostname])
                     tracelist2.append(tracelist1[-1])
                 else:
@@ -114,6 +114,7 @@ def get_route(hostname):
                 break
             finally:
                 mySocket.close()
+        return tracelist2
 
 if __name__ == '__main__':
     get_route("google.co.il")
