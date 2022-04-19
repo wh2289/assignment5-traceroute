@@ -106,13 +106,11 @@ def get_route(hostname):
                 elif types == 0:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
-                    #Fill in start
-                    #You should add your responses to your lists here and return your list if your destination IP is met
-                    #Fill in end
+                    rtt = str(round(t - timeSent)*1000))+ "ms"
+                    tracelist1.append([str(ttl), rtt, str(addr[0]), sourceHostname])
+                    tracelist2.append(tracelist1[-1])
                 else:
-                    #Fill in start
-                    #If there is an exception/error to your if statements, you should append that to your list here
-                    #Fill in end
+                    tracelist1.append([ttl, "*", "Error"])
                 break
             finally:
                 mySocket.close()
