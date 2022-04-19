@@ -34,17 +34,18 @@ def checksum(string):
     return answer
 
 def build_packet():
-   ID = os.getpid() & 0xFFFF
    myChecksum = 0
-   header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, ID, 1)
-   data = struct.pack("d", time.time())
+   ID = os.getpid() & 0xFFFF
+   sendTime = time.time()
+   header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, myID, 1)
+   data = struct.pack("d", sendTime)
    myChecksum = checksum(header+data)
    if sys.platform == 'darwin':
        myChecksum = htons(myChecksum) & 0xffff
    else:
        myChecksum = htons(myChecksum)
 
-    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, ID, 1)
+    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, myID, 1)
     packet = header + data
     return packet
 
@@ -56,13 +57,8 @@ def get_route(hostname):
     for ttl in range(1,MAX_HOPS):
         for tries in range(TRIES):
             destAddr = gethostbyname(hostname)
-
-
             icmp = socket.getprotobyname("icmp")
-            try:
-                mySocket = socket(AF_INET, SOCK_RAW, icmp)
-            except error as msg:
-                print("Socket Error:", msg)
+            mySocket = socket(AF_INET,SOCK_RAW, icmp)
 
             mySocket.setsockopt(IPPROTO_IP, IP_TTL, struct.pack('I', ttl))
             mySocket.settimeout(TIMEOUT)
@@ -75,39 +71,38 @@ def get_route(hostname):
                 howLongInSelect = (time.time() - startedSelect)
                 if whatReady[0] == []:
                     tracelist1.append("* * * Request timed out.")
-                    print("\t*\t\t*\t\t*\t\tRequest times out.")
+                    tracelist2.append([str(ttl),tracelist1[-1]])
                 recvPacket, addr = mySocket.recvfrom(1024)
                 timeReceived = time.time()
                 timeLeft = timeLeft - howLongInSelect
                 if timeLeft <= 0:
                     tracelist1.append("* * * Request timed out.")
-                    print("\t*\t*\t*\Request timed out.")
+                    tracelist2.append([str(ttl),tracelist1[-1]])
             except timeout:
                 continue
 
             else:
-                ttl = recvPacket[8]
-                type, pongCode, pongChecksum, pongID, pongSequence = struct.unpack("bbHHh", recvPacket[20:28])
-                RTT = (timeReceived - struct.unpack("d", recvPacket[28:36])[0])*1000
+                icmp_Type, icmp_Code, icmp_Checksum, icmp_ID, icmp_Sequence, timeSent = struct.unpack("bbHHhd", recvPacket[20:36])
+                types, = struct.unpack("b", recvPacket[20:21])
                 try:
-                    routerHostname = gethostbyaddr(addr[0])[0]
-                except herror:   #if the host does not provide a hostname
-                    #Fill in start
-                    #Fill in end
+                   sourceHostname = gethostbyaddr(addr[0])[0]
+                except herror:
+                    sourceHostname = "hostname can't return"
+
 
                 if types == 11:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 +
                     bytes])[0]
-                    #Fill in start
-                    #You should add your responses to your lists here
-                    #Fill in end
+                    rtt = str(round(timeSent*1000))+ "ms"
+                    tracelist1.append([str(ttl), rtt, str(addr[0]), sourceHostname])
+                    tracelist2.append(tracelist1[-1])
                 elif types == 3:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
-                    #Fill in start
-                    #You should add your responses to your lists here 
-                    #Fill in end
+                    rtt = "*"
+                    tracelist1.append([str(ttl), rtt, "Request timed out"])
+                    tracelist2.append(tracelist1[-1])
                 elif types == 0:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
