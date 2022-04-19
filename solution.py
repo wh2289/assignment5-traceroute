@@ -35,7 +35,7 @@ def checksum(string):
 
 def build_packet():
    myChecksum = 0
-   ID = os.getpid() & 0xFFFF
+   myID = os.getpid() & 0xFFFF
    sendTime = time.time()
    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, myID, 1)
    data = struct.pack("d", sendTime)
@@ -58,7 +58,7 @@ def get_route(hostname):
         for tries in range(TRIES):
             destAddr = gethostbyname(hostname)
             icmp = getprotobyname("icmp")
-            mySocket = socket(AF_INET,SOCK_RAW, icmp)
+            mySocket = socket(AF_INET, SOCK_RAW, icmp)
 
             mySocket.setsockopt(IPPROTO_IP, IP_TTL, struct.pack('I', ttl))
             mySocket.settimeout(TIMEOUT)
