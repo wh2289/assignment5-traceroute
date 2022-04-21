@@ -90,6 +90,7 @@ def get_route(hostname):
                 types = struct.unpack("b", recvPacket[20:21])
                 try:
                     sourceHostname = gethostbyaddr(addr[0])[0]
+                    print("Source Hostname = ", sourceHostname)
                 except herror:
                     sourceHostname = "hostname not returnable"
 
