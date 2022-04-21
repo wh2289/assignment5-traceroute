@@ -100,7 +100,9 @@ def get_route(hostname):
                                                                 bytes])[0]
                     rtt = str(round(timeSent * 1000)) + "ms"
                     tracelist1.append([str(ttl), rtt, str(addr[0]), sourceHostname])
+                    print("List 1: ", tracelist1)
                     tracelist2.append(tracelist1[-1])
+                    print("List 2: ", tracelist2)
                 elif types == 3:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
