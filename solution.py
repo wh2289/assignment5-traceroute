@@ -100,16 +100,14 @@ def get_route(hostname):
                     rtt = str(round(timeSent * 1000)) + "ms"
                     tracelist1.append([str(ttl), rtt, str(addr[0]), sourceHostname])
                     tracelist2.append(tracelist1[-1])
-                    return tracelist2
                     print(tracelist2)
 
                 elif types == 3:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     rtt = "*"
-                    tracelist1.append([str(ttl), rtt, "Request timed out"])
+                    tracelist1.append([str(ttl), rtt, sourceHostname])
                     tracelist2.append(tracelist1[-1])
-                    return tracelist2
                     print(tracelist2)
                 elif types == 0:
                     bytes = struct.calcsize("d")
