@@ -119,9 +119,10 @@ def get_route(hostname):
                 else:
                     tracelist1.append([ttl, "*", "Error"])
                 break
+                return tracelist2
             finally:
                 mySocket.close()
-    return tracelist2
+
 
 
 
