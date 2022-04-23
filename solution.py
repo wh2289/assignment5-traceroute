@@ -73,7 +73,7 @@ def get_route(hostname):
                 howLongInSelect = (time.time() - startedSelect)
                 if whatReady[0] == []:
                     tracelist1.append("* * * Request timed out.")
-                    tracelist2 = [str(ttl), tracelist1[-1]]
+                    tracelist2 = [[str(ttl)], [tracelist1[-1]]]
                 recvPacket, addr = mySocket.recvfrom(1024)
                 timeReceived = time.time()
                 timeLeft = timeLeft - howLongInSelect
