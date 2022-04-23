@@ -89,7 +89,7 @@ def get_route(hostname):
                 types = icmp_Type
                 print(types)
                 try:
-                    sourceHostname = gethostbyaddr(addr[1])
+                    sourceHostname = gethostbyaddr(str(addr[0]))
                     print("Source Hostname = ", sourceHostname)
                 except herror:
                     sourceHostname = "hostname not returnable"
