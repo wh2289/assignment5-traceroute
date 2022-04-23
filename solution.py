@@ -73,7 +73,7 @@ def get_route(hostname):
                 howLongInSelect = (time.time() - startedSelect)
                 if whatReady[0] == []:
                     tracelist1.append("* * * Request timed out.")
-                    tracelist2.append([str(ttl), tracelist1[-1]])
+                    tracelist2.append([[str(ttl), tracelist1[-1]]])
                 recvPacket, addr = mySocket.recvfrom(1024)
                 timeReceived = time.time()
                 timeLeft = timeLeft - howLongInSelect
@@ -92,7 +92,7 @@ def get_route(hostname):
                     sourceHostname = gethostbyaddr(addr[0])
                     print("Source Hostname = ", sourceHostname)
                 except herror:
-                    print("hostname not returnable")
+                    sourceHostname = "Hostname not returnable"
 
                 if types == 11:
                     bytes = struct.calcsize("d")
