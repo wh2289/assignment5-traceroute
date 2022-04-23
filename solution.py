@@ -89,10 +89,10 @@ def get_route(hostname):
                 types = icmp_Type
                 print(types)
                 try:
-                    sourceHostname = gethostbyaddr(addr)
+                    sourceHostname = gethostbyaddr(addr[1])
                     print("Source Hostname = ", sourceHostname)
                 except herror:
-                    sourceHostname = "Hostname not returnable"
+                    sourceHostname = "hostname not returnable"
 
                 if types == 11:
                     bytes = struct.calcsize("d")
