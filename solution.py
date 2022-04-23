@@ -59,6 +59,7 @@ def get_route(hostname):
     destAddr = gethostbyname(hostname)
     for ttl in range(1, MAX_HOPS):
         for tries in range(TRIES):
+            destAddr = gethostbyname(hostname)
             icmp = getprotobyname("icmp")
             mySocket = socket(AF_INET, SOCK_RAW, icmp)
 
@@ -79,7 +80,7 @@ def get_route(hostname):
                 timeLeft = timeLeft - howLongInSelect
                 if timeLeft <= 0:
                     tracelist1.append("* * * Request timed out.")
-                    tracelist2.append([str(ttl), tracelist1[-1]])
+                    tracelist2.append(tracelist1)
             except timeout:
                 continue
 
