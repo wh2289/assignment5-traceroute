@@ -89,7 +89,7 @@ def get_route(hostname):
                 types = 0
                 print(types)
                 try:
-                    sourceHostname = gethostbyaddr(addr[0])[0]
+                    sourceHostname = gethostbyaddr(addr[0])
                     print("Source Hostname = ", sourceHostname)
                 except herror:
                     sourceHostname = "hostname not returnable"
