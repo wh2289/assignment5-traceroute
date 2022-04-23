@@ -87,6 +87,7 @@ def get_route(hostname):
                 icmp_Type, icmp_Code, icmp_Checksum, icmp_ID, icmp_Sequence, timeSent = struct.unpack("bbHHhd",
                                                                                                       recvPacket[20:36])
                 types = 0
+                print(types)
                 try:
                     sourceHostname = gethostbyaddr(addr[0])[0]
                     print("Source Hostname = ", sourceHostname)
