@@ -92,7 +92,7 @@ def get_route(hostname):
                     sourceHostname = gethostbyaddr(addr[0])
                     print("Source Hostname = ", sourceHostname)
                 except herror:
-                    sourceHostname = "hostname not returnable"
+                    print("hostname not returnable")
 
                 if types == 11:
                     bytes = struct.calcsize("d")
