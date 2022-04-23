@@ -56,10 +56,9 @@ def get_route(hostname):
     timeLeft = TIMEOUT
     tracelist1 = []
     tracelist2 = []
-
+    destAddr = gethostbyname(hostname)
     for ttl in range(1, MAX_HOPS):
         for tries in range(TRIES):
-            destAddr = gethostbyname(hostname)
             icmp = getprotobyname("icmp")
             mySocket = socket(AF_INET, SOCK_RAW, icmp)
 
