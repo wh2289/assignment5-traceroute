@@ -99,7 +99,7 @@ def get_route(hostname):
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     rtt = str(round(timeSent * 1000)) + "ms"
                     tracelist1 = [[str(ttl)], [str(rtt)], [str(addr[0])], [str(sourceHostname)]]
-                    tracelist2.append(tracelist1)
+                    tracelist2 = [tracelist1]
 
 
                 elif types == 3:
@@ -107,14 +107,14 @@ def get_route(hostname):
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     rtt = "*"
                     tracelist1 = [[str(ttl)], [str(rtt)], [str(addr[0])], [str(sourceHostname)]]
-                    tracelist2.append(tracelist1)
+                    tracelist2 = [tracelist1]
 
                 elif types == 0:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     rtt = str(round(timeReceived - timeSent) * 1000) + "ms"
                     tracelist1 = [[str(ttl)], [str(rtt)], [str(addr[0])], [str(sourceHostname)]]
-                    tracelist2.append(tracelist1)
+                    tracelist2 = [tracelist1]
                     if addr[0] == destAddr:
                         print(tracelist2)
                         return tracelist2
